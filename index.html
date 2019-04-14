@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <input id="searchTerm" placeholder="enter serach term"/>
+        <button onClick="searchNow()">SEARCH</button>
+    </div>
+    
+    <p id="displayAuthor"></p>
+    <p id="displayTitle"></p>
+    <img id="displayImg" src="https://image.freepik.com/free-vector/illustration-magnifying-glass-icon_53876-8774.jpg" width="107" height="98">
+    </br>
+    <a id="displayLink" href="http://careerdevs.com/" target="_blank">Click</a>
+    
+    <p id="demo"></p>
+    
+    <script>
+        
+        function searchNow() {
+            // console.log("The button was clicked")
+            var xhrCall = new XMLHttpRequest();
+            
+            let searchTerm = document.getElementById('searchTerm').value
+            
+            var url = "https://newsapi.org/v2/everything?q=" + searchTerm + "&from=2019-03-13&sortBy=publishedAt&apiKey=531913653fe54835b9f2f638cde0deca";
+            
+            xhrCall.open('GET', url, true);
+            
+            // onload checks the readystate automatically, but not the status
+            xhrCall.onload = function() {
+                if (this.status == 200) {
+                    var data = JSON.parse(this.responseText);
+                    console.log(data);
+                    console.log(data.articles[0]);
+                    
+                    
+                    document.getElementById("displayAuthor").innerHTML = "Author: " + data.articles[0].author
+                    document.getElementById("displayTitle").innerHTML = "Title: " + data.articles[0].title
+                    document.getElementById("displayImg").src =  data.articles[0].urlToImage
+                    
+                    document.getElementById("displayLink").href = data.articles[0].url
+                    
+                    
+                }
+            };
+            
+            xhrCall.send();
+     
+        }
+    </script>
+</body>
+</html>
